@@ -1,6 +1,7 @@
 const Koa = require('koa');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
+const logger=require('koa-logger')();
 const demoMiddle = require('./middleware/demo-middle');
 
 const app = new Koa();
@@ -11,10 +12,13 @@ const router = new Router({
 });
 
 // 调用自定义的中间件
-app.use(demoMiddle.printUrl);
+// app.use(demoMiddle.printUrl);
 
 // 使用bodyparser中间件
 app.use(bodyParser());
+
+// 使用koa-logger
+app.use(logger);
 
 // 使用子路由
 router.use(require('./routes').routes());
