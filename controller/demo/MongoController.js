@@ -1,17 +1,24 @@
-const mongodb = require('mongodb');
-const bluebird=require('bluebird');
+const _ = require('underscore');
+const models = require('../../models');
 
-const url = 'mongodb://localhost:27017/koa-demo';
+class MongoController {
+    ready() {
+        return models.ready();
+    }
 
-const mongoAsync=bluebird.promisifyAll(mongodb);
+    async addRegister(userId, age) {
+        const registerDao = new models.Register({
+            userId,
+            age
+        });
 
-async function f() {
-    try {
-        const client=await mongoAsync.MongoClient;
-        await client.connect(url);
-        console.log('ok');
-    } catch (err) {
-        console.log(err);
+        return registerDao.saveAsync();
+    }
+
+    async findOne(userId, age) {
+        return await models.Register.findOneAsync({
+            userId,
+            age
+        })
     }
 }
-f();
